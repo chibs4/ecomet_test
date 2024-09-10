@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  repos_back:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: repos_back
+    command: python main.py 
+    env_file:
+      - .env
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    environment:
+      - port=${SERVER_PORT}
+    depends_on:
+      - repos_db
+
+  repos_db:
+    image: postgres
+    env_file: .env
+    ports:
+      - "5432:5432"
+    container_name: "${POSTGRES_SERVER}"
